@@ -1,8 +1,5 @@
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -10,8 +7,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 public class ZombieShooter extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 600;
+    public static final int WIDTH = 1000;
+    public static final int HEIGHT = 800;
     public static final String TITLE = "Zombie Shooter";
 
     private Thread thread;
@@ -34,20 +31,11 @@ public class ZombieShooter extends JPanel implements Runnable, KeyListener, Mous
         addMouseListener(this);
         addMouseMotionListener(this);
     }
-    public static void main(String[] args) {
-        JFrame frame = new JFrame(TITLE);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(new ZombieShooter());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
 
     public void addNotify() {
         super.addNotify();
         if (thread == null) {
             thread = new Thread(this);
-            addKeyListener(this);
             thread.start();
         }
     }
@@ -125,4 +113,41 @@ public class ZombieShooter extends JPanel implements Runnable, KeyListener, Mous
     }
 
     public void mouseClicked(MouseEvent e) {
-        // Not
+        // Not used
+    }
+
+    public void mousePressed(MouseEvent e) {
+        player.setShooting(true);
+    }
+
+    public void mouseReleased(MouseEvent e) {
+        player.setShooting(false);
+    }
+
+    public void mouseEntered(MouseEvent e) {
+        // Not used
+    }
+
+    public void mouseExited(MouseEvent e) {
+        // Not used
+    }
+
+    public void mouseDragged(MouseEvent e) {
+        // Not used
+    }
+
+    public void mouseMoved(MouseEvent e) {
+        // Not used
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame(TITLE);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setContentPane(new ZombieShooter());
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+    }
+}

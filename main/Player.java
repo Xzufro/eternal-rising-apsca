@@ -1,168 +1,80 @@
-import java.awt.Color;
+import javax.imageio.ImageIO;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 
-public class Player implements KeyListener, MouseListener, MouseMotionListener {
+public class Player {
     private int x;
     private int y;
-    private int speed;
-    private int mouseX;
-    private int mouseY;
     private boolean left;
     private boolean right;
     private boolean up;
     private boolean down;
     private boolean shooting;
+    private BufferedImage playerSprite;
 
     public Player(int x, int y) {
         this.x = x;
         this.y = y;
-        speed = 5;
-        mouseX = x;
-        mouseY = y;
-        left = false;
-        right = false;
-        up = false;
-        down = false;
-        shooting = false;
+        this.left = false;
+        this.right = false;
+        this.up = false;
+        this.down = false;
+        this.shooting = false;
+        this.playerSprite = loadPlayerSprite();
+    }
+    private BufferedImage loadPlayerSprite() {
+        try {
+            URL resource = getClass().getResource("neeble-gnorp1.png");
+            return ImageIO.read(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void setLeft(boolean left) {
+        this.left = left;
+    }
+
+    public void setRight(boolean right) {
+        this.right = right;
+    }
+
+    public void setUp(boolean up) {
+        this.up = up;
+    }
+
+    public void setDown(boolean down) {
+        this.down = down;
+    }
+
+    public void setShooting(boolean shooting) {
+        this.shooting = shooting;
     }
 
     public void update() {
-        move();
-        shoot();
-    }
-
-    private void move() {
-        if (left && x > 0) {
-            x -= speed;
+        // Update player's position and perform other logic
+        // based on the direction and shooting status
+        if (left) {
+            x -= 5;
         }
-        if (right && x < ZombieShooter.WIDTH - 20) {
-            x += speed;
+        if (right) {
+            x += 5;
         }
-        if (up && y > 0) {
-            y -= speed;
+        if (up) {
+            y -= 5;
         }
-        if (down && y < ZombieShooter.HEIGHT - 40) {
-            y += speed;
-        }
-    }
-
-    private void shoot() {
-        if (shooting) {
-            // Perform shooting logic here
-            System.out.println("Shooting at: (" + mouseX + ", " + mouseY + ")");
+        if (down) {
+            y += 5;
         }
     }
 
     public void render(Graphics g) {
-        g.setColor(Color.WHITE);
-        g.fillRect(x, y, 20, 20);
-        g.setColor(Color.GREEN);
-        g.drawLine(x + 10, y + 10, mouseX, mouseY);
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
-        if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
-            left = true;
-        }
-        if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
-            right = true;
-        }
-        if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
-            up = true;
-        }
-        if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
-            down = true;
+        // Render the player on the screen
+        if (playerSprite != null) {
+            g.drawImage(playerSprite, x, y, null);
         }
     }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        int key = e.getKeyCode();
-        if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
-            left = false;
-        }
-        if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
-            right = false;
-        }
-        if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
-            up = false;
-        }
-        if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
-            down = false;
-        }
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // Not used
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        shooting = true;
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        // Not used
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        shooting = false;
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        // Not used
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        // Not used
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        mouseX = e.getX();
-        mouseY = e.getY();
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        mouseX = e.getX();
-        mouseY = e.getY();
-    }
-
-    public void setLeft(boolean b) {
-        this.left = b;
-    }
-
-    public void setUp(boolean b) {
-        this.up = b;
-    }
-
-    public void setDown(boolean b) {
-        this.down = b;
-    }
-
-    public void setShooting(boolean b) {
-        this.shooting = b;
-    }
-
-    public void setMouseX(int x2) {
-        this.mouseX = x2;
-    }
-
-    public void setRight(boolean b) {
-        this.right = b;
-    }
-
 }
